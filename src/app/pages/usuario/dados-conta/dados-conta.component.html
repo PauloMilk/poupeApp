@@ -1,0 +1,68 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <app-page-title page-title="Meus Dados" show-button="false">
+  </app-page-title>
+
+  <form [formGroup]="resourceForm" (ngSubmit)="submitForm()">
+    <div class="card">
+      <div class="card-header">
+        Informações sobre sua conta
+      </div>
+      <div class="card-body ">
+        <div class="alert alert-info" role="alert">
+          Caso deseje editar apenas o <strong>Nome</strong>, não preencha os campos de <strong>Nova senha</strong> e
+          <strong>Confirme a senha</strong>.
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="formGroupExampleInput">Nome</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Digite seu nome completo"
+              formControlName="nome">
+          </div>
+          <div class="form-group col">
+            <label for="formGroupExampleInput">Email</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Digite seu email" readonly
+              formControlName="username">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="formGroupExampleInput">Nova senha</label>
+            <input type="password" class="form-control" id="formGroupExampleInput" placeholder="Digite uma senha"
+              formControlName="novaSenha">
+          </div>
+          <div class="form-group col">
+            <label for="formGroupExampleInput">Confirme a senha</label>
+            <input type="password" class="form-control" id="formGroupExampleInput" placeholder="Digite a mesma senha"
+              formControlName="confirmSenha">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <button type="button" (click)="open(content)" class="btn btn-primary btn-lg float-right mt-3">Alterar</button>
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirmação de Autenticidade</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label for="dateOfBirth">Digite sua senha atual</label>
+          <input class="form-control" type="password" formControlName="password">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-dark" [disabled]="submittingForm || resourceForm.invalid" >Salvar</button>
+      </div>
+    </ng-template>
+
+  </form>
+
+</div>

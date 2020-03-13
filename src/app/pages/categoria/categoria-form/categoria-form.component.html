@@ -1,0 +1,50 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <app-page-title [page-title]="pageTitle" button-text="<< Voltar" button-link="/categoria"
+    button-class="btn-outline-info">
+  </app-page-title>
+
+  <form [formGroup]="resourceForm" (ngSubmit)="submitForm()">
+    <div class="card">
+      <div class="card-header">
+        Informações sobre a categoria
+      </div>
+      <div class="card-body">
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="name">Nome</label>
+            <input type="text" name="name" id="nome" class="form-control"
+              [class.is-invalid]="resourceForm.get('nome').invalid && resourceForm.get('nome').touched"
+              formControlName="nome" />
+            <div class="text-danger" *ngIf="resourceForm.get('nome').invalid && resourceForm.get('nome').touched">
+              <div *ngIf="resourceForm.get('nome').errors.required">
+                O campo nome é obrigatório.
+              </div>
+              <div *ngIf="resourceForm.get('nome').errors.minlength">
+                O campo nome deve ter no mínimo 3 caracteres.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-8">
+            <label for="descricao">Descrição</label>
+            <input type="text" name="descricao" id="descricao" maxlength="150"
+              [class.is-invalid]="resourceForm.get('descricao').invalid && resourceForm.get('descricao').touched"
+              class="form-control" formControlName="descricao" />
+            <div class="text-danger"
+              *ngIf="resourceForm.get('descricao').invalid && resourceForm.get('descricao').touched">
+              <div *ngIf="resourceForm.get('descricao').errors.required">
+                O campo descrição não deve conter mais de 150 caracteres.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button [disabled]="submittingForm || resourceForm.invalid" type="submit"
+      class="btn btn-primary btn-lg float-right mt-3">Salvar</button>
+  </form>
+
+</div>

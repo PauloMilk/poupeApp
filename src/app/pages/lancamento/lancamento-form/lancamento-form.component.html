@@ -1,0 +1,123 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <app-page-title [page-title]="pageTitle" button-text="<< Voltar" button-link="/lancamento"
+    button-class="btn-outline-info">
+  </app-page-title>
+
+  <form [formGroup]="resourceForm" (ngSubmit)="submitForm()">
+    <div class="card">
+      <div class="card-header">
+        Informações sobre o lancamento
+      </div>
+      <div class="card-body">
+
+        <div class="form-row">
+          <div class="form-group col-md-2">
+            <label for="type">Tipo</label>
+            <select name="type" id="type" class="form-control" [class.is-invalid]="resourceForm.get('tipo').invalid && resourceForm.get('tipo').touched" formControlName="tipo">
+              <option [ngValue]="'DESPESA'">DESPESA</option>
+              <option [ngValue]="'RECEITA'">RECEITA</option>
+            </select>
+            <div class="text-danger" *ngIf="resourceForm.get('tipo').invalid && resourceForm.get('tipo').touched">
+              <div *ngIf="resourceForm.get('tipo').errors.required">
+                O campo tipo é obrigatório.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-5">
+            <label for="name">Lançamento</label>
+            <input type="text" id="nome" name="nome" class="form-control" [class.is-invalid]="resourceForm.get('nome').invalid && resourceForm.get('nome').touched" formControlName="nome" />
+            <div class="text-danger" *ngIf="resourceForm.get('nome').invalid && resourceForm.get('nome').touched">
+              <div *ngIf="resourceForm.get('nome').errors.required">
+                O campo nome é obrigatório.
+              </div>
+              <div *ngIf="resourceForm.get('nome').errors.minlength">
+                O campo nome deve ter no mínimo 3 caracteres.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="amount">Valor</label>
+            <div class="input-group">
+              <div class="input-group-append">
+                <div class="input-group-text">R$</div>
+              </div>
+              <input currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false}"
+                type="text" id="amount" class="form-control text-right" name="valor" formControlName="valor" [class.is-invalid]="resourceForm.get('valor').invalid && resourceForm.get('valor').touched">
+            </div>
+            <div class="text-danger" *ngIf="resourceForm.get('valor').invalid && resourceForm.get('valor').touched">
+              <div *ngIf="resourceForm.get('valor').errors.required">
+                O campo valor é obrigatório.
+              </div>
+              <div *ngIf="resourceForm.get('valor').errors.min">
+                O campo valor deve ser no mínimo R$ 0,01.
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group col-md-2">
+            <label for="date">Data</label>
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd"
+                   ngbDatepicker #d="ngbDatepicker" formControlName="data" readonly [class.is-invalid]="resourceForm.get('data').invalid && resourceForm.get('data').touched" />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fas fa-calendar-week"></i></button>
+              </div>
+            </div>
+            <div class="text-danger" *ngIf="resourceForm.get('data').invalid && resourceForm.get('data').touched">
+              <div *ngIf="resourceForm.get('data').errors.required">
+                O campo data é obrigatório.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-row">
+
+          <div class="form-group col-md-2">
+            <label for="paid">Status</label>
+            <br />
+            <div class="btn-group">
+              <label (click)="resourceForm.get('pagamento').setValue('PAGO')"
+                [class.active]="resourceForm.get('pagamento').value == 'PAGO'" class="btn btn-outline-info">Pago</label>
+              <label (click)="resourceForm.get('pagamento').setValue('PENDENTE')"
+                [class.active]="resourceForm.get('pagamento').value == 'PENDENTE'"
+                class="btn btn-outline-info">Pendente</label>
+            </div>
+          </div>
+
+          <div class="form-group col-md-2">
+
+            <label for="categoryId">Categoria</label>
+            <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed"
+              formControlName="categoria" [ngbTypeahead]="search" placeholder="Pesquise a categoria" [ngbTypeahead]="search"
+              [inputFormatter]="formatter" [editable]='false' [class.is-invalid]="resourceForm.get('categoria').invalid && resourceForm.get('categoria').touched" />
+              <div class="text-danger" *ngIf="resourceForm.get('categoria').invalid && resourceForm.get('categoria').touched">
+                <div *ngIf="resourceForm.get('categoria').errors.required">
+                  O campo categoria é obrigatório.
+                </div>
+              </div>
+          </div>
+
+          <div class="form-group col-md-8">
+            <label for="description">Descrição</label>
+            <input type="text" id="description" maxlength="150" class="form-control" name="descricao" formControlName="descricao" [class.is-invalid]="resourceForm.get('descricao').invalid && resourceForm.get('descricao').touched">
+            <div class="text-danger" *ngIf="resourceForm.get('descricao').invalid && resourceForm.get('descricao').touched">
+              <div *ngIf="resourceForm.get('descricao').errors.maxlength">
+                O campo descrição não deve conter mais de 150 caracteres.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <button [disabled]="submittingForm || resourceForm.invalid" type="submit" class="btn btn-primary btn-lg float-right mt-3">Salvar</button>
+  </form>
+
+</div>

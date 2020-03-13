@@ -1,0 +1,24 @@
+<div id="login" class="text-center">
+  <form class="form-signin" (ngSubmit)="ativarConta()">
+    <img class="mb-4" routerLink="/login" src="https://pngimage.net/wp-content/uploads/2018/06/logo-money-png-6.png" alt="" width="72"
+      height="72">
+    <h2 class="h4 mb-3 font-weight-normal">PoupeApp</h2>
+    <ng-container *ngIf="errorMessage != null">
+      <ngb-alert type="danger" *ngFor="let message of errorMessage" (close)="close(message)">{{message}}</ngb-alert>
+    </ng-container>
+
+    <ng-container *ngIf="successMessage != null">
+      <ngb-alert type="success" *ngFor="let message of successMessage" (close)="close(message)">{{message}}</ngb-alert>
+    </ng-container>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="loading">
+      <span class="spinner-border" role="status" aria-hidden="true" *ngIf="loading"></span>
+      <span *ngIf="!loading">Ative sua conta aqui!</span>
+    </button>
+    <div class="mt-1">
+      <a routerLink="/login" class="badge badge-light">Voltar ao login</a>
+    </div>
+    <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
+  </form>
+
+</div>

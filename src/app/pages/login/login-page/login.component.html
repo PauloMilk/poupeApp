@@ -1,0 +1,34 @@
+<div id="login" class="text-center">
+  <form class="form-signin" (ngSubmit)="onSubmit()">
+    <img class="mb-4" src="https://pngimage.net/wp-content/uploads/2018/06/logo-money-png-6.png" alt="" width="72"
+      height="72">
+    <h1 class="h3 mb-3 font-weight-normal">PoupeApp</h1>
+
+    <ng-container *ngIf="errorMessage != null">
+      <ngb-alert type="danger" *ngFor="let message of errorMessage" (close)="close(message)">{{message}}</ngb-alert>
+    </ng-container>
+
+    <label for="inputEmail" class="sr-only">Email</label>
+    <input [(ngModel)]="usuario.username" type="email" id="inputEmail" class="form-control" placeholder="Email" required
+      autofocus name="email">
+    <label for="inputPassword" class="sr-only">Senha</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required name="senha"
+      [(ngModel)]="usuario.password">
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Lembrar-me
+      </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="loading">
+      <span class="spinner-border" role="status" aria-hidden="true" *ngIf="loading"></span>
+      <span *ngIf="!loading">Acessar</span>
+    </button>
+    <div class="d-flex mt-1">
+      <a routerLink="/usuario/esqueceuSenha" class="badge badge-light mr-auto">Esqueceu sua senha?</a>
+      <a routerLink="/usuario/cadastro" class="badge badge-light ml-auto">Cadastre-se aqui!</a>
+    </div>
+
+    <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
+  </form>
+
+</div>

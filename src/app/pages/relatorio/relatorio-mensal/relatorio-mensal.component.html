@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <app-page-title page-title="Relatório de Receitas e Despesas" show-button="false">
+  </app-page-title>
+
+  <div class="card">
+    <div class="card-header">
+        Selecione o Mês e Ano para gerar os Relatórios
+    </div>
+
+    <div class="card-body">
+        <div class="form-row">
+            <div class="form-group col-md-7">
+                <label for="month">Mês</label>
+                <select name="month" id="month" #month class="form-control">
+                    <option value="">Selecione um mês</option>
+                    <option value="1">Janeiro</option>
+                    <option value="2">Fevereiro</option>
+                    <option value="3">Março</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Maio</option>
+                    <option value="6">Junho</option>
+                    <option value="7">Julho</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+            </div>
+            <div class="form-group col-md-5">
+                <label for="year">Ano</label>
+                <select name="year" id="year" #year class="form-control">
+                    <option value="">Selecione um ano</option>
+                    <option *ngFor="let ano of anos" [value]="ano">{{ano}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md text-right">
+                <button class="btn btn-primary" (click)="onSubmit()">Gerar Relatórios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-container *ngIf="relatorio">
+
+<div class="card-deck mt-5 mb-5">
+    <div class="card text-center text-white bg-success">
+        <div class="card-header">
+            TOTAL DE RECEITAS
+        </div>
+        <div class="card-body">
+            {{totalReceita | currency: 'BRL'}}
+        </div>
+    </div>
+    <div class="card text-center text-white bg-danger">
+        <div class="card-header">
+            TOTAL DE DESPESAS
+        </div>
+        <div class="card-body">
+            {{totalDespesa | currency: 'BRL'}}
+        </div>
+    </div>
+    <div class="card text-center text-white bg-info">
+        <div class="card-header">
+            SALDO
+        </div>
+        <div class="card-body">
+            {{balanco | currency: 'BRL'}}
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row mt-5 mb-4">
+    <div class="col-md-6">
+        <p-chart type="bar" [data]="receitaChartData" [options]="chartOptions"></p-chart>
+    </div>
+
+    <div class="col-md-6">
+      <p-chart type="bar" [data]="despesaChartData" [options]="chartOptions"></p-chart>
+    </div>
+</div>
+</ng-container>
