@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/dashboard']);
       },
       (erro: any) => {
+        console.log(erro);
         this.loading = false;
         const error = erro.error.error_description === 'Usuário inexistente ou senha inválida'
           ? 'Usuário e/ou senha inválidos!' : erro.error.error_description;
