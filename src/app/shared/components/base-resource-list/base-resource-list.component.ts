@@ -11,12 +11,12 @@ import { ToastService } from '../../services/toast.service';
 export abstract class BaseResourceListComponent<T extends BaseResourceModel> implements OnInit, OnDestroy {
 
   public search: string = null;
-  protected loading = false;
-  protected page = 1;
-  protected size = 5;
-  protected collectionSize = 0;
-  protected titleModal: string;
-  protected messageModal: string;
+  public loading = false;
+  public page = 1;
+  public size = 5;
+  public collectionSize = 0;
+  public titleModal: string;
+  public messageModal: string;
   resources: T[] = [];
   modelChanged: Subject<string> = new Subject<string>();
   constructor(private resourceService: BaseResourceService<T>, private modalService: NgbModal, protected toastService: ToastService) {
@@ -35,7 +35,7 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
     this.getAll();
   }
 
-  protected getAll() {
+  public getAll() {
     this.loading = true;
     this.resourceService.getAll(this.page, this.size, this.search).subscribe(
       entries => {
