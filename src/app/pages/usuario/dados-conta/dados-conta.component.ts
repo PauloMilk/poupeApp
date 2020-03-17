@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../shared/usuario.service';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { ToastService } from 'src/app/shared/services/toast.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dados-conta',
@@ -25,9 +25,9 @@ export class DadosContaComponent extends BaseResourceFormComponent<Usuario> {
     this.resourceForm = this.formBuilder.group({
       nome: [null, [Validators.required, Validators.minLength(3)]],
       username: [null],
-      password: [null, [Validators.required]],
-      novaSenha: [null, [Validators.minLength(3)]],
-      confirmSenha: [null, [Validators.minLength(3)]]
+      // password: [null, [Validators.required]],
+      // novaSenha: [null, [Validators.minLength(3)]],
+      // confirmSenha: [null, [Validators.minLength(3)]]
     });
   }
 
@@ -49,31 +49,39 @@ export class DadosContaComponent extends BaseResourceFormComponent<Usuario> {
   }
 
   submitForm() {
-    console.log("teste")
     this.submittingForm = true;
-    this.validarFormulario();
+    const resource: Usuario = this.jsonDataToResourceFn(this.resourceForm.value);
+    this.updateUsuario(resource);
   }
 
-  private validarFormulario() {
-    const resource: Usuario = this.jsonDataToResourceFn(this.resourceForm.value);
-    if (resource.senhaConfirm != null && resource.novaSenha != null) {
-      if (resource.novaSenha !== resource.senhaConfirm) {
-        this.errorMessage.push('Senha informadas incoerentes.');
-      }
-    } else {
-      resource.novaSenha = null;
-      resource.senhaConfirm = null;
-    }
-    if (this.errorMessage === null || this.errorMessage.length === 0) {
-      this.updateUsuario(resource);
-    }
-  }
+  // private validarFormulario() {
+  //   const resource: Usuario = this.jsonDataToResourceFn(this.resourceForm.value);
+  //   if (resource.senhaConfirm != null && resource.novaSenha != null) {
+  //     if (resource.novaSenha !== resource.senhaConfirm) {
+  //       this.errorMessage.push('Senha informadas incoerentes.');
+  //     }
+  //   } else {
+  //     resource.novaSenha = null;
+  //     resource.senhaConfirm = null;
+  //   }
+  //   if (this.errorMessage === null || this.errorMessage.length === 0) {
+  //     this.updateUsuario(resource);
+  //   }
+  // }
 
   private updateUsuario(resource: Usuario) {
-    this.service.atualizarDados(resource)
+    this.service.atualizarDados(resource).pipe(
+      tap(() => {
+        this.submittingForm = false;
+      })
+    )
       .subscribe(
-        data => console.log(data),
-        error => console.log(error)
+        data => {
+          this.toastService.show('Operação realizada com sucesso!', { classname: 'bg-success text-light', delay: 3000 });
+        },
+        error => {
+          this.toastService.show('Ocorreu um erro no servidor, tente mais tarde.', { classname: 'bg-danger text-light', delay: 10000 });
+        }
       );
   }
 
@@ -109,16 +117,16 @@ export class DadosContaComponent extends BaseResourceFormComponent<Usuario> {
   //   }
   // }
 
-  open(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
+  // open(content) {
+  //   this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+  //     // this.closeResult = `Closed with: ${result}`;
+  //   }, (reason) => {
+  //     // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  //   });
+  // }
 
-  close(error: string) {
-    this.errorMessage.splice(this.errorMessage.indexOf(error), 1);
-  }
+  // close(error: string) {
+  //   this.errorMessage.splice(this.errorMessage.indexOf(error), 1);
+  // }
 
 }

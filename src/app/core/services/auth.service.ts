@@ -29,6 +29,7 @@ export class AuthService {
 
     return this.http.post(url, params.toString(), { headers: httpOptions }).pipe(
       map((resp: any) => {
+        console.log(resp)
         this.jwtPayload = null;
         this.armazenarToken(resp.access_token);
         return true;

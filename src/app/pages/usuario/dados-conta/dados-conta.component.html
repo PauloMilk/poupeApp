@@ -9,7 +9,7 @@
         Informações sobre sua conta
       </div>
       <div class="card-body ">
-        <div class="alert alert-info" role="alert">
+        <div *ngIf="false" class="alert alert-info" role="alert">
           Caso deseje editar apenas o <strong>Nome</strong>, não preencha os campos de <strong>Nova senha</strong> e
           <strong>Confirme a senha</strong>.
         </div>
@@ -25,7 +25,8 @@
               formControlName="username">
           </div>
         </div>
-        <div class="form-row">
+        <!-- Manutenção -->
+        <div *ngIf="false" class="form-row">
           <div class="form-group col">
             <label for="formGroupExampleInput">Nova senha</label>
             <input type="password" class="form-control" id="formGroupExampleInput" placeholder="Digite uma senha"
@@ -37,13 +38,14 @@
               formControlName="confirmSenha">
           </div>
         </div>
-
+        <!-- Fim Manutenção -->
       </div>
 
     </div>
 
-    <button type="button" (click)="open(content)" class="btn btn-primary btn-lg float-right mt-3">Alterar</button>
-    <ng-template #content let-modal>
+    <button type="button" (click)="submitForm()" class="btn btn-primary btn-lg float-right mt-3"  [disabled]="submittingForm || resourceForm.invalid">Atualizar</button>
+
+    <ng-template #content let-modal *ngIf="false">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Confirmação de Autenticidade</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -59,7 +61,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-outline-dark" [disabled]="submittingForm || resourceForm.invalid" >Salvar</button>
+        <button type="submit" class="btn btn-outline-primary" [disabled]="submittingForm || resourceForm.invalid"
+          (click)="submitForm()">Salvar</button>
       </div>
     </ng-template>
 
