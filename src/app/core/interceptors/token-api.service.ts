@@ -23,7 +23,7 @@ export class TokenApiService implements HttpInterceptor {
   // tslint:disable-next-line: max-line-length
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
     const authService = this.injector.get(AuthService);
-    if (req.url.includes('/api/oauth/token')) {
+    if (req.url.includes('/api/oauth/token') || !authService.token) {
       return next.handle(req);
     }
     return next.handle(this.addToken(req, authService.token)).pipe(

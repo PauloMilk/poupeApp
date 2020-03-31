@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../shared/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-confirmacao-cadastro',
@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./confirmacao-cadastro.component.css']
 })
 export class ConfirmacaoCadastroComponent implements OnInit {
-  loading: boolean = false;
+  public loading = false;
   public errorMessage: string[] = null;
   public successMessage: string[] = [];
   constructor(
@@ -26,20 +26,26 @@ export class ConfirmacaoCadastroComponent implements OnInit {
     this.successMessage = [];
     this.errorMessage = [];
     this.route.paramMap.pipe(
-      switchMap(params => this.usuarioService.ativarConta(params.get('codigo')))
+      switchMap(params => this.usuarioService.ativarConta(params.get('codigo'))),
+      finalize(() => {
+        this.loading = false;
+      }),
     )
       .subscribe(
         () => {
-          this.loading = false;
           this.successMessage = ['Conta ativada com sucesso! Em instantes você será redirecionado para o login.'];
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 3000);
         },
         (erro) => {
-          this.loading = false;
-          this.successMessage = null;
-          this.errorMessage = erro.error.errors;
+          if (erro.status === 0) {
+            this.errorMessage.push('Erro durante a conexao com o servidor.');
+          } else {
+            erro.error.forEach(element => {
+              this.errorMessage.push(element.mensagemUsuario);
+            });
+          }
         }
       );
   }

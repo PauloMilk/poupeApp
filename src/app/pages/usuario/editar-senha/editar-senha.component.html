@@ -1,0 +1,55 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <app-page-title page-title="Editar Senha" show-button="true" button-text="<< Voltar" button-link="/usuario/meusDados" button-class="btn-outline-info">
+  </app-page-title>
+
+  <form [formGroup]="resourceForm" (ngSubmit)="submitForm()">
+    <div class="card">
+      <div class="card-header">
+        Formulário para edição de senha
+      </div>
+      <div class="card-body ">
+        <!-- Manutenção -->
+        <div  class="form-row">
+          <div class="form-group col">
+            <label for="formGroupExampleInput">Nova senha</label>
+            <input type="password" class="form-control" id="formGroupExampleInput" placeholder="Digite uma senha"
+            formControlName="novaSenha">
+          </div>
+          <div class="form-group col">
+            <label for="formGroupExampleInput">Confirme a senha</label>
+            <input type="password" class="form-control" id="formGroupExampleInput" placeholder="Digite a mesma senha"
+            formControlName="confirmeSenha">
+          </div>
+        </div>
+        <!-- Fim Manutenção -->
+      </div>
+
+    </div>
+
+    <button type="button" (click)="open(content)" class="btn btn-primary btn-lg float-right mt-3" >Atualizar</button>
+
+    <ng-template #content let-modal >
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirmação de Autenticidade</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label for="dateOfBirth">Digite sua senha atual</label>
+          <input class="form-control" type="password" formControlName="senha">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" (click)="submitForm()" class="btn btn-outline-primary"
+        [disabled]="submittingForm || resourceForm.invalid">Salvar</button>
+      </div>
+    </ng-template>
+
+  </form>
+
+</div>

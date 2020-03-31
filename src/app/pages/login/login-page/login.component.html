@@ -1,5 +1,5 @@
 <div id="login" class="text-center">
-  <form class="form-signin" (ngSubmit)="onSubmit()">
+  <form class="form-signin" (ngSubmit)="onSubmit()" #form="ngForm">
     <img class="mb-4" src="https://pngimage.net/wp-content/uploads/2018/06/logo-money-png-6.png" alt="" width="72"
       height="72">
     <h1 class="h3 mb-3 font-weight-normal">PoupeApp</h1>
@@ -8,24 +8,33 @@
       <ngb-alert type="danger" *ngFor="let message of errorMessage" (close)="close(message)">{{message}}</ngb-alert>
     </ng-container>
 
+    <ng-container *ngIf="successMessage != null">
+      <ngb-alert type="success" *ngFor="let message of successMessage" (close)="close(message)">{{message}}</ngb-alert>
+    </ng-container>
+
+
+    <button class="btn btn-outline-info w-100 mb-3" *ngIf="btnSolicitarAtivacao" type="button" (click)="solicitarEmail()">Solicitar ativação novamente</button>
+
     <label for="inputEmail" class="sr-only">Email</label>
-    <input [(ngModel)]="usuario.username" type="email" id="inputEmail" class="form-control" placeholder="Email" required
+    <input email [(ngModel)]="usuario.email" type="email" id="inputEmail" class="form-control" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}" #email="ngModel" placeholder="Email" required
       autofocus name="email">
+      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback mb-1">
+        Preencha o campo email corretamente.
+      </div>
+
     <label for="inputPassword" class="sr-only">Senha</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required name="senha"
-      [(ngModel)]="usuario.password">
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Lembrar-me
-      </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="loading">
+      [(ngModel)]="usuario.senha" #senha="ngModel" [ngClass]="{'is-invalid': senha.invalid && (senha.dirty || senha.touched)}">
+      <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="invalid-feedback mb-1">
+        Preencha o campo senha.
+      </div>
+    <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" [disabled]=" form.invalid || loading">
       <span class="spinner-border" role="status" aria-hidden="true" *ngIf="loading"></span>
       <span *ngIf="!loading">Acessar</span>
     </button>
     <div class="d-flex mt-1">
-      <a routerLink="/usuario/esqueceuSenha" class="badge badge-light mr-auto">Esqueceu sua senha?</a>
-      <a routerLink="/usuario/cadastro" class="badge badge-light ml-auto">Cadastre-se aqui!</a>
+      <a routerLink="/usuario/esqueceuSenha" class="badge badge-light mr-auto h7">Esqueceu sua senha?</a>
+      <a routerLink="/usuario/novo" class="badge badge-light ml-auto h7">Cadastre-se aqui!</a>
     </div>
 
     <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>

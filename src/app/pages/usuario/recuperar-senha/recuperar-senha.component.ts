@@ -1,35 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from '../shared/usuario';
 import { UsuarioService } from '../shared/usuario.service';
-import { finalize } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap, finalize } from 'rxjs/operators';
+import { Usuario } from '../shared/usuario';
 
 @Component({
-  selector: 'app-esqueceu-senha',
-  templateUrl: './esqueceu-senha.component.html',
-  styleUrls: ['./esqueceu-senha.component.css']
+  selector: 'app-recuperar-senha',
+  templateUrl: './recuperar-senha.component.html',
+  styleUrls: ['./recuperar-senha.component.css']
 })
-export class EsqueceuSenhaComponent implements OnInit {
+export class RecuperarSenhaComponent implements OnInit {
   public loading = false;
-  public usuario: Usuario = Usuario as {};
-  public errorMessage: string[] = [];
+  public usuario: Usuario = Usuario as  {};
+  public errorMessage: string[] = null;
   public successMessage: string[] = [];
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(
+    private usuarioService: UsuarioService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
 
-  onSubmit() {
+  ativarConta() {
     this.loading = true;
-    this.errorMessage = [];
     this.successMessage = [];
-    this.usuarioService.solicitarRecuperacaoSenha(this.usuario.email).pipe(
+    this.errorMessage = [];
+    this.route.paramMap.pipe(
+      switchMap(params => this.usuarioService.recuperarSenha(params.get('codigo'))),
       finalize(() => {
         this.loading = false;
       }),
     )
       .subscribe(
         () => {
-          this.successMessage = ['Solicitação enviada com sucesso! Verifique seu e-mail.'];
+          this.successMessage = ['Conta ativada com sucesso! Em instantes você será redirecionado para o login.'];
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 3000);
         },
         (erro) => {
           if (erro.status === 0) {
@@ -40,8 +49,7 @@ export class EsqueceuSenhaComponent implements OnInit {
             });
           }
         }
-    );
-
+      );
   }
 
   close(error: string) {
@@ -54,4 +62,5 @@ export class EsqueceuSenhaComponent implements OnInit {
 
 
   }
+
 }

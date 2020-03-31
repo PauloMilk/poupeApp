@@ -3,11 +3,11 @@ import { BaseResourceModel } from '../../../shared/models/base-resource-model';
 export class Usuario extends BaseResourceModel {
   constructor(
     public nome?: string,
-    public username?: string,
-    public password?: string,
-    public senhaConfirm?: string,
-    public codigo?: string,
+    public email?: string,
+    public senha?: string,
     public novaSenha?: string,
+    public confirmeSenha?: string,
+    public codigo?: string,
   ) {
     super();
   }

@@ -23,13 +23,12 @@ export class AuthService {
     const { url, httpOptions } = this.createHeaders();
 
     const params = new URLSearchParams();
-    params.append('username', usuario.username);
-    params.append('password', usuario.password);
+    params.append('username', usuario.email);
+    params.append('password', usuario.senha);
     params.append('grant_type', 'password');
 
     return this.http.post(url, params.toString(), { headers: httpOptions }).pipe(
       map((resp: any) => {
-        console.log(resp)
         this.jwtPayload = null;
         this.armazenarToken(resp.access_token);
         return true;
@@ -99,7 +98,7 @@ export class AuthService {
     const url = `${environment.urlAPI}/oauth/token`;
     const httpOptions = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic d2ViOndlYg==',
+      Authorization: 'Basic d2ViOndlYg==',
     });
     return { url, httpOptions };
   }

@@ -24,7 +24,7 @@ export class DadosContaComponent extends BaseResourceFormComponent<Usuario> {
   protected buildResourceForm() {
     this.resourceForm = this.formBuilder.group({
       nome: [null, [Validators.required, Validators.minLength(3)]],
-      username: [null],
+      email: [null],
       // password: [null, [Validators.required]],
       // novaSenha: [null, [Validators.minLength(3)]],
       // confirmSenha: [null, [Validators.minLength(3)]]
@@ -39,11 +39,10 @@ export class DadosContaComponent extends BaseResourceFormComponent<Usuario> {
         (resource) => {
           this.resource = resource;
           this.editorResourceAttributes();
-          this.resourceForm.patchValue(resource); //binds loaded resource data to resourceForm
+          this.resourceForm.patchValue(resource);
         },
         (error) => {
           this.toastService.show('Ocorreu um erro no servidor, tente mais tarde.', { classname: 'bg-danger text-light', delay: 10000 });
-          // this.goBackPage();
         }
       );
   }
@@ -70,7 +69,7 @@ export class DadosContaComponent extends BaseResourceFormComponent<Usuario> {
   // }
 
   private updateUsuario(resource: Usuario) {
-    this.service.atualizarDados(resource).pipe(
+    this.service.atualizarNome(resource).pipe(
       tap(() => {
         this.submittingForm = false;
       })

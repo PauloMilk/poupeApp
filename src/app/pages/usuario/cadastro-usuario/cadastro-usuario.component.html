@@ -1,0 +1,52 @@
+<div id="login" class="text-center">
+  <form class="form-signin" (ngSubmit)="onSubmit()" #form="ngForm">
+    <img class="mb-4" src="https://pngimage.net/wp-content/uploads/2018/06/logo-money-png-6.png" alt="logo poupeApp" width="72"
+      height="72">
+    <h2 class="h4 mb-3 font-weight-normal">Novo Usuário</h2>
+
+    <ng-container *ngIf="errorMessage != null">
+      <ngb-alert type="danger" *ngFor="let message of errorMessage" (close)="close(message)">{{message}}</ngb-alert>
+    </ng-container>
+
+    <ng-container *ngIf="successMessage != null">
+      <ngb-alert type="success" *ngFor="let message of successMessage" (close)="close(message)">{{message}}</ngb-alert>
+    </ng-container>
+
+    <input type="text" id="inputNome" class="form-control" [ngClass]="{'is-invalid': nome.invalid && (nome.dirty || nome.touched) }" placeholder="Nome Completo"
+      name="nome" [(ngModel)]="usuario.nome" #nome="ngModel" required minlength="3">
+    <label for="inputNome" class="sr-only">Nome</label>
+    <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="invalid-feedback mb-1">
+      Preencha o campo nome.
+    </div>
+
+    <input email type="email" id="inputEmail" class="form-control" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched) }" placeholder="Email" name="email" [(ngModel)]="usuario.email" #email="ngModel" required>
+    <label for="inputEmail" class="sr-only">E-mail</label>
+    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback mb-1">
+      Preencha o campo email.
+    </div>
+
+    <input type="password" id="inputSenha" class="form-control" [ngClass]="{'is-invalid': senha.invalid && (senha.dirty || senha.touched) }" placeholder="Senha" name="senha" [(ngModel)]="usuario.novaSenha" #senha="ngModel" required>
+    <label for="inputSenha" class="sr-only">Senha</label>
+    <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="invalid-feedback mb-1">
+      Preencha o campo senha.
+    </div>
+
+    <input type="password" id="inputConfirmarSenha" class="form-control" [ngClass]="{'is-invalid': confirmeSenha.invalid && (confirmeSenha.dirty || confirmeSenha.touched) }" placeholder="Confirme a senha"
+      name="confirmSenha" [(ngModel)]="usuario.confirmeSenha" #confirmeSenha="ngModel" required>
+      <label for="inputConfirmarSenha" class="sr-only">Senha</label>
+      <div *ngIf="confirmeSenha.invalid && (confirmeSenha.dirty || confirmeSenha.touched)" class="invalid-feedback mb-1">
+        Preencha o campo confirme senha.
+      </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!form.valid || loading">
+      <span class="spinner-border" role="status" aria-hidden="true" *ngIf="loading"></span>
+      <span *ngIf="!loading" >Cadastrar</span>
+    </button>
+    <div class="mt-1">
+      <a routerLink="/login" class="badge badge-light h7">Voltar e realizar login</a>
+    </div>
+
+    <p class="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
+  </form>
+
+</div>
