@@ -1,5 +1,5 @@
 <div id="login" class="text-center">
-  <form class="form-signin" (ngSubmit)="onSubmit()" #form="ngForm">
+  <form class="form-signin" [formGroup]="formLogin" (ngSubmit)="onSubmit()">
     <img class="mb-4" src="https://pngimage.net/wp-content/uploads/2018/06/logo-money-png-6.png" alt="" width="72"
       height="72">
     <h1 class="h3 mb-3 font-weight-normal">PoupeApp</h1>
@@ -16,19 +16,19 @@
     <button class="btn btn-outline-info w-100 mb-3" *ngIf="btnSolicitarAtivacao" type="button" (click)="solicitarEmail()">Solicitar ativação novamente</button>
 
     <label for="inputEmail" class="sr-only">Email</label>
-    <input email [(ngModel)]="usuario.email" type="email" id="inputEmail" class="form-control" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}" #email="ngModel" placeholder="Email" required
-      autofocus name="email">
-      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback mb-1">
+    <input type="email" id="inputEmail" class="form-control" [ngClass]="{'is-invalid': formLogin.get('email').invalid && (formLogin.get('email').dirty || formLogin.get('email').touched)}"  placeholder="Email"
+       name="email" formControlName="email">
+      <div *ngIf="formLogin.get('email').invalid && (formLogin.get('email').dirty || formLogin.get('email').touched)" class="invalid-feedback mb-1">
         Preencha o campo email corretamente.
       </div>
 
     <label for="inputPassword" class="sr-only">Senha</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required name="senha"
-      [(ngModel)]="usuario.senha" #senha="ngModel" [ngClass]="{'is-invalid': senha.invalid && (senha.dirty || senha.touched)}">
-      <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="invalid-feedback mb-1">
+      [ngClass]="{'is-invalid': formLogin.get('senha').invalid && (formLogin.get('senha').dirty || formLogin.get('senha').touched)}" formControlName="senha">
+      <div *ngIf="formLogin.get('senha').invalid && (formLogin.get('senha').dirty || formLogin.get('senha').touched)" class="invalid-feedback mb-1">
         Preencha o campo senha.
       </div>
-    <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" [disabled]=" form.invalid || loading">
+    <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" [disabled]=" formLogin.invalid || loading">
       <span class="spinner-border" role="status" aria-hidden="true" *ngIf="loading"></span>
       <span *ngIf="!loading">Acessar</span>
     </button>

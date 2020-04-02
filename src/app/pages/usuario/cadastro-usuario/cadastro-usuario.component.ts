@@ -2,27 +2,45 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/pages/usuario/shared/usuario';
 import { UsuarioService } from '../shared/usuario.service';
 import { finalize, tap } from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro-usuario.component.html',
   styleUrls: ['./cadastro-usuario.component.css']
 })
-export class CadastroUsuarioComponent {
-  public usuario: Usuario = {} as Usuario;
+export class CadastroUsuarioComponent implements OnInit {
+  private usuario: Usuario = {} as Usuario;
   public errorMessage: string[] = [];
   public successMessage: string[] = [];
   public loading = false;
+  public formUsuario: FormGroup;
   constructor(
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private formBuilder: FormBuilder
   ) { }
 
+  ngOnInit() {
+    this.buildFormUsuario();
+  }
+
+
+  private buildFormUsuario() {
+    this.formUsuario = this.formBuilder.group({
+      nome: [null, [Validators.required, Validators.minLength(5)]],
+      email: [null, [Validators.required, Validators.email]],
+      senha: [null, [Validators.required, Validators.minLength(6)]],
+      confirmeSenha: [null, [Validators.required, Validators.minLength(6)]]
+    });
+  }
+
   onSubmit() {
+    this.usuario = this.formUsuario.value;
     if (this.testarSenhas()) {
       this.loading = true;
       this.errorMessage = [];
       this.successMessage = [];
-      this.usuarioService.create({ nome: this.usuario.nome, email: this.usuario.email, senha: this.usuario.novaSenha })
+      this.usuarioService.create(this.usuario)
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -31,7 +49,8 @@ export class CadastroUsuarioComponent {
         subscribe(
           () => {
             this.usuario = {} as Usuario;
-            this.successMessage = ['Usuário cadastrado com sucesso! Confirme o cadastro em seu email.'];
+            this.formUsuario.reset();
+            this.successMessage.push('Usuário cadastrado com sucesso! Confirme o cadastro em seu email.');
           },
           (erro: any) => {
             if (erro.status === 0) {
@@ -58,7 +77,7 @@ export class CadastroUsuarioComponent {
   }
 
   private testarSenhas() {
-    if (this.usuario.novaSenha !== this.usuario.confirmeSenha) {
+    if (this.usuario.senha !== this.usuario.confirmeSenha) {
       this.errorMessage = ['As senhas não conferem!'];
       return false;
     }

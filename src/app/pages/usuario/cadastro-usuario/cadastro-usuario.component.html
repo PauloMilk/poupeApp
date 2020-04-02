@@ -1,5 +1,5 @@
 <div id="login" class="text-center">
-  <form class="form-signin" (ngSubmit)="onSubmit()" #form="ngForm">
+  <form class="form-signin" [formGroup]="formUsuario" (ngSubmit)="onSubmit()">
     <img class="mb-4" src="https://pngimage.net/wp-content/uploads/2018/06/logo-money-png-6.png" alt="logo poupeApp" width="72"
       height="72">
     <h2 class="h4 mb-3 font-weight-normal">Novo Usuário</h2>
@@ -12,33 +12,33 @@
       <ngb-alert type="success" *ngFor="let message of successMessage" (close)="close(message)">{{message}}</ngb-alert>
     </ng-container>
 
-    <input type="text" id="inputNome" class="form-control" [ngClass]="{'is-invalid': nome.invalid && (nome.dirty || nome.touched) }" placeholder="Nome Completo"
-      name="nome" [(ngModel)]="usuario.nome" #nome="ngModel" required minlength="3">
+    <input type="text" id="inputNome" class="form-control" [ngClass]="{'is-invalid': formUsuario.get('nome').invalid && (formUsuario.get('nome').dirty || formUsuario.get('nome').touched) }" placeholder="Nome Completo"
+      name="nome" formControlName="nome">
     <label for="inputNome" class="sr-only">Nome</label>
-    <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="invalid-feedback mb-1">
+    <div *ngIf="formUsuario.get('nome').invalid && (formUsuario.get('nome').dirty || formUsuario.get('nome').touched)" class="invalid-feedback mb-1">
       Preencha o campo nome.
     </div>
 
-    <input email type="email" id="inputEmail" class="form-control" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched) }" placeholder="Email" name="email" [(ngModel)]="usuario.email" #email="ngModel" required>
+    <input email type="email" id="inputEmail" class="form-control" [ngClass]="{'is-invalid': formUsuario.get('email').invalid && (formUsuario.get('email').dirty || formUsuario.get('email').touched) }" placeholder="Email" name="email" formControlName="email">
     <label for="inputEmail" class="sr-only">E-mail</label>
-    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback mb-1">
+    <div *ngIf="formUsuario.get('email').invalid && (formUsuario.get('email').dirty || formUsuario.get('email').touched)" class="invalid-feedback mb-1">
       Preencha o campo email.
     </div>
 
-    <input type="password" id="inputSenha" class="form-control" [ngClass]="{'is-invalid': senha.invalid && (senha.dirty || senha.touched) }" placeholder="Senha" name="senha" [(ngModel)]="usuario.novaSenha" #senha="ngModel" required>
+    <input type="password" id="inputSenha" class="form-control" [ngClass]="{'is-invalid': formUsuario.get('senha').invalid && (formUsuario.get('senha').dirty || formUsuario.get('senha').touched) }" placeholder="Senha" name="senha" formControlName="senha">
     <label for="inputSenha" class="sr-only">Senha</label>
-    <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="invalid-feedback mb-1">
+    <div *ngIf="formUsuario.get('senha').invalid && (formUsuario.get('senha').dirty || formUsuario.get('senha').touched)" class="invalid-feedback mb-1">
       Preencha o campo senha.
     </div>
 
-    <input type="password" id="inputConfirmarSenha" class="form-control" [ngClass]="{'is-invalid': confirmeSenha.invalid && (confirmeSenha.dirty || confirmeSenha.touched) }" placeholder="Confirme a senha"
-      name="confirmSenha" [(ngModel)]="usuario.confirmeSenha" #confirmeSenha="ngModel" required>
+    <input type="password" id="inputConfirmarSenha" class="form-control" [ngClass]="{'is-invalid': formUsuario.get('confirmeSenha').invalid && (formUsuario.get('confirmeSenha').dirty || formUsuario.get('confirmeSenha').touched) }" placeholder="Confirme a senha"
+      name="confirmSenha" formControlName="confirmeSenha">
       <label for="inputConfirmarSenha" class="sr-only">Senha</label>
-      <div *ngIf="confirmeSenha.invalid && (confirmeSenha.dirty || confirmeSenha.touched)" class="invalid-feedback mb-1">
+      <div *ngIf="formUsuario.get('confirmeSenha').invalid && (formUsuario.get('confirmeSenha').dirty || formUsuario.get('confirmeSenha').touched)" class="invalid-feedback mb-1">
         Preencha o campo confirme senha.
       </div>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!form.valid || loading">
+    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="formUsuario.invalid || loading">
       <span class="spinner-border" role="status" aria-hidden="true" *ngIf="loading"></span>
       <span *ngIf="!loading" >Cadastrar</span>
     </button>

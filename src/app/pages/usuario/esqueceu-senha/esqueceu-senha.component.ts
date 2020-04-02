@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../shared/usuario';
 import { UsuarioService } from '../shared/usuario.service';
 import { finalize } from 'rxjs/operators';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-esqueceu-senha',
@@ -13,15 +14,22 @@ export class EsqueceuSenhaComponent implements OnInit {
   public usuario: Usuario = Usuario as {};
   public errorMessage: string[] = [];
   public successMessage: string[] = [];
-  constructor(private usuarioService: UsuarioService) { }
+  public formEmail: FormGroup;
+  constructor(private usuarioService: UsuarioService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.buildFormEmail();
+  }
+
+  private buildFormEmail() {
+    this.formEmail = this.formBuilder.group({
+      email: [null, [Validators.required, Validators.email]]
+    });
   }
 
   onSubmit() {
-    this.loading = true;
-    this.errorMessage = [];
-    this.successMessage = [];
+    this.setOpcoesDefault();
+    this.usuario = this.formEmail.value;
     this.usuarioService.solicitarRecuperacaoSenha(this.usuario.email).pipe(
       finalize(() => {
         this.loading = false;
@@ -29,7 +37,9 @@ export class EsqueceuSenhaComponent implements OnInit {
     )
       .subscribe(
         () => {
-          this.successMessage = ['Solicitação enviada com sucesso! Verifique seu e-mail.'];
+          this.usuario = Usuario as {};
+          this.formEmail.reset();
+          this.successMessage.push('Solicitação enviada com sucesso! Verifique seu e-mail.');
         },
         (erro) => {
           if (erro.status === 0) {
@@ -42,6 +52,12 @@ export class EsqueceuSenhaComponent implements OnInit {
         }
     );
 
+  }
+
+  private setOpcoesDefault() {
+    this.loading = true;
+    this.errorMessage = [];
+    this.successMessage = [];
   }
 
   close(error: string) {
