@@ -23,7 +23,7 @@ export class DadosContaComponent extends BaseResourceFormComponent<Usuario> {
 
   protected buildResourceForm() {
     this.resourceForm = this.formBuilder.group({
-      nome: [null, [Validators.required, Validators.minLength(3)]],
+      nome: [null, [Validators.required, Validators.minLength(3), Validators.pattern("[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$")]],
       email: [null],
       // password: [null, [Validators.required]],
       // novaSenha: [null, [Validators.minLength(3)]],
