@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DadosContaComponent } from './dados-conta/dados-conta.component';
+import { EditarNomeComponent } from './editar-nome/editar-nome.component';
 import { ConfirmacaoCadastroComponent } from './confirmacao-cadastro/confirmacao-cadastro.component';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { NoAuthGuard } from 'src/app/core/guards/no-auth.guard';
@@ -11,7 +11,7 @@ import { RecuperarSenhaComponent } from './recuperar-senha/recuperar-senha.compo
 
 
 const routes: Routes = [
-  { path: 'meusDados', component: DadosContaComponent, canActivate: [AuthGuard] },
+  { path: 'meusDados', component: EditarNomeComponent, canActivate: [AuthGuard] },
   { path: 'meusDados/editarSenha', component: EditarSenhaComponent, canActivate: [AuthGuard] },
   { path: 'novo', component: CadastroUsuarioComponent,  canActivate: [NoAuthGuard] },
   { path: 'confirmar/:codigo', component: ConfirmacaoCadastroComponent, canActivate: [NoAuthGuard] },
