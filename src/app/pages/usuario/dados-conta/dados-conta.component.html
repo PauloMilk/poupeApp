@@ -12,15 +12,15 @@
         <div class="form-row">
           <div class="form-group col">
             <label for="inputNome">Nome</label>
-            <input type="text" class="form-control" [ngClass]="{'is-invalid': resourceForm.get('nome').invalid}" id="inputNome" placeholder="Digite seu nome completo"
+            <input type="text" class="form-control" [ngClass]="{'is-invalid': resourceForm.get('nome').invalid && (resourceForm.get('nome').dirty || resourceForm.get('nome').touched)}" id="inputNome" placeholder="Digite seu nome completo"
               formControlName="nome" required />
-              <div *ngIf="resourceForm.get('nome').hasError('required')" class="invalid-feedback">
+              <div *ngIf="resourceForm.get('nome').hasError('required') && (resourceForm.get('nome').dirty || resourceForm.get('nome').touched)" class="invalid-feedback">
                 Preencha o campo nome.
               </div>
-              <div *ngIf="resourceForm.get('nome').hasError('minlength')" class="invalid-feedback">
+              <div *ngIf="resourceForm.get('nome').hasError('minlength') && (resourceForm.get('nome').dirty || resourceForm.get('nome').touched)" class="invalid-feedback">
                 Prencha o campo nome com mais de 3 caracteres.
               </div>
-              <div *ngIf="resourceForm.get('nome').hasError('pattern')" class="invalid-feedback">
+              <div *ngIf="resourceForm.get('nome').hasError('pattern') && (resourceForm.get('nome').dirty || resourceForm.get('nome').touched)" class="invalid-feedback">
                 Preencha o campo nome com apenas letras
               </div>
           </div>
