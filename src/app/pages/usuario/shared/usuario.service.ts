@@ -10,9 +10,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
   providedIn: 'root'
 })
 export class UsuarioService extends BaseResourceService<Usuario> {
-  recuperarSenha(arg0: string): any {
-    throw new Error("Method not implemented.");
-  }
 
   constructor(protected injector: Injector) {
     super(environment.urlAPI + '/usuarios', injector, Usuario.fromJson);
@@ -65,6 +62,11 @@ export class UsuarioService extends BaseResourceService<Usuario> {
   solicitarAtivacao(email: string) {
     const url = `${environment.urlAPI}/usuarios/solicitacao/ativacao/${email}`;
     return this.http.get(url);
+  }
+
+  recuperarSenha(usuario: Usuario) {
+    const url = `${environment.urlAPI}/usuarios/recuperacao/senha`;
+    return this.http.patch(url, { codigo: usuario.codigo, novaSenha: usuario.senha, email: usuario.email });
   }
 
 }

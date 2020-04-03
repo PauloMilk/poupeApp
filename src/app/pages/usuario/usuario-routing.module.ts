@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'novo', component: CadastroUsuarioComponent,  canActivate: [NoAuthGuard] },
   { path: 'confirmar/:codigo', component: ConfirmacaoCadastroComponent, canActivate: [NoAuthGuard] },
   { path: 'esqueceuSenha', component: EsqueceuSenhaComponent,  canActivate: [NoAuthGuard] },
-  { path: 'recuperar/senha/:codigo', component: RecuperarSenhaComponent, canActivate: [NoAuthGuard] }
+  { path: 'recuperar/senha/:codigo/:email', component: RecuperarSenhaComponent, canActivate: [NoAuthGuard] }
 ];
 
 @NgModule({

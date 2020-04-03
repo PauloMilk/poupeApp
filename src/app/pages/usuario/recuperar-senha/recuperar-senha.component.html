@@ -1,5 +1,5 @@
 <div id="login" class="text-center">
-  <form class="form-signin" (ngSubmit)="ativarConta()" #form="ngForm">
+  <form class="form-signin"[formGroup]="formSenha" (ngSubmit)="ativarConta()">
     <img class="mb-4" routerLink="/login" src="https://pngimage.net/wp-content/uploads/2018/06/logo-money-png-6.png"
       alt="" width="72" height="72">
     <h2 class="h4 mb-3 font-weight-normal">PoupeApp</h2>
@@ -13,23 +13,23 @@
 
 
     <input type="password" id="inputNovaSenha" class="form-control"
-      [ngClass]="{'is-invalid': novaSenha.invalid && (novaSenha.dirty || novaSenha.touched) }" placeholder="Nova senha" name="novaSenha"
-      [(ngModel)]="usuario.novaSenha" #novaSenha="ngModel" required minlength="3">
+      [ngClass]="{'is-invalid': formSenha.get('senha').invalid && (formSenha.get('senha').dirty || formSenha.get('senha').touched) }" placeholder="Nova senha" name="novaSenha"
+      formControlName="senha">
     <label for="inputNome" class="sr-only">Nova senha</label>
-    <div *ngIf="novaSenha.invalid && (novaSenha.dirty || novaSenha.touched)" class="invalid-feedback mb-1">
+    <div *ngIf="formSenha.get('senha').invalid && (formSenha.get('senha').dirty || formSenha.get('senha').touched)" class="invalid-feedback mb-1">
       Preencha o campo nova senha.
     </div>
 
     <input type="password" id="inputConfirmeSenha" class="form-control"
-      [ngClass]="{'is-invalid': confirmeSenha.invalid && (confirmeSenha.dirty || confirmeSenha.touched) }" placeholder="Confirme senha" name="confirmeSenha"
-      [(ngModel)]="usuario.confirmeSenha" #confirmeSenha="ngModel" required minlength="3">
+      [ngClass]="{'is-invalid': formSenha.get('confirmeSenha').invalid && (formSenha.get('confirmeSenha').dirty || formSenha.get('confirmeSenha').touched) }" placeholder="Confirme senha" name="confirmeSenha"
+      formControlName="confirmeSenha" required minlength="3">
     <label for="inputNome" class="sr-only">Confirme senha</label>
-    <div *ngIf="confirmeSenha.invalid && (confirmeSenha.dirty || confirmeSenha.touched)" class="invalid-feedback mb-1">
+    <div *ngIf="formSenha.get('confirmeSenha').invalid && (formSenha.get('confirmeSenha').dirty || formSenha.get('confirmeSenha').touched)" class="invalid-feedback mb-1">
       Preencha o campo confirme senha.
     </div>
 
 
-    <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" [disabled]="!form.valid || loading">
+    <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" [disabled]="formSenha.invalid || loading">
       <span class="spinner-border" role="status" aria-hidden="true" *ngIf="loading"></span>
       <span *ngIf="!loading" >Cadastrar</span>
     </button>
