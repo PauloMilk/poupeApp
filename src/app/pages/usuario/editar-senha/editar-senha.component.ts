@@ -17,7 +17,6 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
   public errorMessage: string[] = [];
   public errorSenhas = false;
 
-  public modal: NgbModalRef;
   constructor(protected injector: Injector, protected service: UsuarioService, protected toastService: ToastrService, private modalService: NgbModal) {
     super(injector, new Usuario(), service, Usuario.fromJson, toastService);
   }
@@ -35,7 +34,7 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
   }
 
   open(content) {
-    this.modal = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   close(error: string) {
@@ -49,7 +48,6 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
       this.submittingForm = true;
       this.updateUsuario(resource);
     } else {
-      this.modal.close();
       this.errorSenhas = true;
       this.errorMessage.push('Senha incoerentes!');
     }
