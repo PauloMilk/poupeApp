@@ -17,7 +17,7 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
   public errorMessage: string[] = [];
   public errorSenhas = false;
 
-  private modal: NgbModalRef;
+  public modal: NgbModalRef;
   constructor(protected injector: Injector, protected service: UsuarioService, protected toastService: ToastrService, private modalService: NgbModal) {
     super(injector, new Usuario(), service, Usuario.fromJson, toastService);
   }
