@@ -54,7 +54,7 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
 
   }
 
-  public validarSenhas(content: NgbModalRef) {
+  validarSenhas(content) {
     this.errorMessage = [];
     this.errorSenhas = false;
     const resource: Usuario = this.jsonDataToResourceFn(this.resourceForm.value);
