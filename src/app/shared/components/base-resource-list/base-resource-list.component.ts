@@ -5,10 +5,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
-import { ToastService } from '../../services/toast.service';
+import { ToastrService } from 'ngx-toastr';
 
 
-export abstract class BaseResourceListComponent<T extends BaseResourceModel> implements OnInit, OnDestroy {
+export abstract class BaseResourceListComponent<T extends BaseResourceModel> implements OnInit {
 
   public search: string = null;
   public loading = false;
@@ -17,13 +17,14 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
   public collectionSize = 0;
   public titleModal: string;
   public messageModal: string;
+  serverErrorMessages: string[] = null;
   resources: T[] = [];
   modelChanged: Subject<string> = new Subject<string>();
-  constructor(private resourceService: BaseResourceService<T>, private modalService: NgbModal, protected toastService: ToastService) {
+  constructor(private resourceService: BaseResourceService<T>, private modalService: NgbModal, protected toastService: ToastrService) {
     this.modelChanged.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-    ).subscribe(() => this.getAll())
+    ).subscribe(() => this.getAll());
 
   }
 
@@ -44,7 +45,7 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
         this.loading = false;
       },
       error => {
-        this.toastService.show('Erro ao tentar carregar a lista, tente mais tarde!', { classname: 'bg-danger text-light', delay: 3000 });
+        this.actionsForError(error);
       }
     );
   }
@@ -77,17 +78,36 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
           this.page--;
           this.getAll();
         }
-        this.toastService.show('Operação realizada com sucesso!', { classname: 'bg-success text-light', delay: 3000 });
+        this.toastService.success('Operação realizada com sucesso!', null, {
+          progressBar: true, closeButton: true, positionClass: 'toast-bottom-right'
+        });
       },
       (error) => {
-        this.toastService.show('Erro ao tentar efetuar a operação, por favor tente mais tarde!', { classname: 'bg-danger text-light', delay: 3000 });
+        this.actionsForError(error);
       }
     );
   }
 
-  ngOnDestroy() {
-    this.toastService.toasts.forEach(x => {
-      this.toastService.remove(x);
+  // ngOnDestroy() {
+  //   this.toastService.toasts.forEach(x => {
+  //     this.toastService.remove(x.toastId);
+  //   });
+  // }
+
+
+  private actionsForError(error) {
+    const erroMessage = error.error[0].mensagemUsuario != null
+      ? error.error[0].mensagemUsuario
+      : 'Ocorreu um erro ao processar a sua solicitação!';
+    this.toastService.error(erroMessage, null, {
+      progressBar: true, closeButton: true, positionClass: 'toast-bottom-right'
     });
+
+    if (error.status === 422) {
+      this.serverErrorMessages = JSON.parse(error._body).errors;
+    } else {
+      this.serverErrorMessages.push('Falha na comunicação com o servidor, Por favor, tente mais tarde.');
+    }
+
   }
 }

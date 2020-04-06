@@ -14,9 +14,9 @@
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="name">Nome</label>
-            <input type="text" name="name" id="nome" class="form-control"
+            <input type="text" name="name" id="nome" class="form-control text-uppercase"
               [class.is-invalid]="resourceForm.get('nome').invalid && resourceForm.get('nome').touched"
-              formControlName="nome" />
+              formControlName="nome"  />
             <div class="text-danger" *ngIf="resourceForm.get('nome').invalid && resourceForm.get('nome').touched">
               <div *ngIf="resourceForm.get('nome').errors.required">
                 O campo nome é obrigatório.

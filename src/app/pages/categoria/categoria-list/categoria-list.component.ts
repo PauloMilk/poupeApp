@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, TemplateRef, Injector } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { CategoriaService } from 'src/app/pages/categoria/shared/categoria.service';
 import { Categoria } from '../shared/categoria';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BaseResourceListComponent } from 'src/app/shared/components/base-resource-list/base-resource-list.component';
-import { ToastService } from 'src/app/shared/services/toast.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-categoria-list',
   templateUrl: './categoria-list.component.html',
@@ -11,7 +11,7 @@ import { ToastService } from 'src/app/shared/services/toast.service';
 })
 export class CategoriaListComponent extends BaseResourceListComponent<Categoria> {
 
-  constructor(private service: CategoriaService, injector: Injector, protected toastService: ToastService) {
+  constructor(private service: CategoriaService, injector: Injector, protected toastService: ToastrService) {
     super(service, injector.get(NgbModal), toastService);
 
   }

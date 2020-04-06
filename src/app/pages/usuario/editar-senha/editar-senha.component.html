@@ -2,7 +2,9 @@
 <div class="container">
   <app-page-title page-title="Editar Senha" show-button="true" button-text="<< Voltar" button-link="/usuario/meusDados" button-class="btn-outline-info">
   </app-page-title>
-
+  <ng-container *ngIf="errorMessage != null">
+    <ngb-alert type="danger" *ngFor="let message of errorMessage" (close)="close(message)">{{message}}</ngb-alert>
+  </ng-container>
   <form [formGroup]="resourceForm" (ngSubmit)="submitForm()">
     <div class="card">
       <div class="card-header">
@@ -12,14 +14,27 @@
         <!-- Manutenção -->
         <div  class="form-row">
           <div class="form-group col">
-            <label for="formGroupExampleInput">Nova senha</label>
-            <input type="password" class="form-control" id="formGroupExampleInput" placeholder="Digite uma senha"
-            formControlName="novaSenha">
+            <label for="inputNovaSenha">Nova senha</label>
+            <input type="password" class="form-control" id="inputNovaSenha" placeholder="Digite uma senha"
+            formControlName="novaSenha" [ngClass]="{'is-invalid': resourceForm.get('novaSenha').invalid && (resourceForm.get('novaSenha').dirty || resourceForm.get('novaSenha').touched)}">
+            <div *ngIf="resourceForm.get('novaSenha').hasError('required') && (resourceForm.get('novaSenha').dirty || resourceForm.get('novaSenha').touched)" class="invalid-feedback">
+              Preencha o campo nova senha.
+            </div>
+            <div *ngIf="resourceForm.get('novaSenha').hasError('minlength') && (resourceForm.get('novaSenha').dirty || resourceForm.get('novaSenha').touched)" class="invalid-feedback">
+              Prencha o campo nova senha com mais de 6 caracteres.
+            </div>
           </div>
           <div class="form-group col">
             <label for="formGroupExampleInput">Confirme a senha</label>
             <input type="password" class="form-control" id="formGroupExampleInput" placeholder="Digite a mesma senha"
-            formControlName="confirmeSenha">
+            formControlName="confirmeSenha" [ngClass]="{'is-invalid':( resourceForm.get('confirmeSenha').invalid && (resourceForm.get('confirmeSenha').dirty || resourceForm.get('confirmeSenha').touched)) || errorSenhas}" (keyup)="errorSenhas = false">
+            <div *ngIf="resourceForm.get('confirmeSenha').hasError('required') && (resourceForm.get('confirmeSenha').dirty || resourceForm.get('confirmeSenha').touched)" class="invalid-feedback">
+              Preencha o campo confirme a senha.
+            </div>
+            <div *ngIf="resourceForm.get('confirmeSenha').hasError('minlength') && (resourceForm.get('confirmeSenha').dirty || resourceForm.get('confirmeSenha').touched)" class="invalid-feedback">
+              Prencha o campo confirme a senha com mais de 6 caracteres.
+            </div>
+
           </div>
         </div>
         <!-- Fim Manutenção -->
@@ -27,7 +42,7 @@
 
     </div>
 
-    <button type="button" (click)="open(content)" class="btn btn-primary btn-lg float-right mt-3" >Atualizar</button>
+    <button type="button" [disabled]="resourceForm.get('novaSenha').invalid || resourceForm.get('confirmeSenha').invalid" (click)="validarSenhas(content)" class="btn btn-primary btn-lg float-right mt-3" >Atualizar</button>
 
     <ng-template #content let-modal >
       <div class="modal-header">
@@ -45,7 +60,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="submit" (click)="submitForm()" class="btn btn-outline-primary"
+        <button type="submit" (click)="submitForm()" class="btn btn-success btn-lg"
         [disabled]="submittingForm || resourceForm.invalid">Salvar</button>
       </div>
     </ng-template>

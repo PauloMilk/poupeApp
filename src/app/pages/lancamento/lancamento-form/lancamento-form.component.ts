@@ -1,15 +1,13 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Lancamento } from 'src/app/pages/lancamento/shared/lancamento';
 import { LancamentoService } from 'src/app/pages/lancamento/shared/lancamento.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { switchMap, debounceTime, distinctUntilChanged, map, tap, catchError } from 'rxjs/operators';
 import { CategoriaService } from 'src/app/pages/categoria/shared/categoria.service';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { Observable, of } from 'rxjs';
-import { Page } from 'src/app/interfaces/page';
 import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from 'src/app/shared/services/toast.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lancamento-form',
@@ -21,7 +19,9 @@ export class LancamentoFormComponent extends BaseResourceFormComponent<Lancament
   searching = false;
   searchFailed = false;
 
-  constructor(protected injector: Injector, service: LancamentoService, private categoriaService: CategoriaService, protected toastService: ToastService) {
+  constructor(protected injector: Injector,
+              service: LancamentoService,
+              private categoriaService: CategoriaService, protected toastService: ToastrService) {
     super(injector, new Lancamento(), service, Lancamento.fromJson, toastService);
   }
 
@@ -31,7 +31,8 @@ export class LancamentoFormComponent extends BaseResourceFormComponent<Lancament
     console.log(this.resource.data);
     if (this.resource.data !== undefined) {
       this.resource.data = new Date(this.resource.data);
-      this.resource.data.setMinutes(this.resource.data.getMinutes() + this.resource.data.getTimezoneOffset());
+      this.resource.data
+        .setMinutes(this.resource.data.getMinutes() + this.resource.data.getTimezoneOffset());
     }
   }
 

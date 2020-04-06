@@ -4,6 +4,7 @@ import { CategoriaService } from 'src/app/pages/categoria/shared/categoria.servi
 import { Validators } from '@angular/forms';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { ToastService } from 'src/app/shared/services/toast.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-categoria-form',
@@ -15,7 +16,7 @@ export class CategoriaFormComponent extends BaseResourceFormComponent<Categoria>
   constructor(
     protected service: CategoriaService,
     protected injector: Injector,
-    protected toastService: ToastService
+    protected toastService: ToastrService
   ) {
     super(injector, new Categoria(), service, Categoria.fromJson, toastService);
   }

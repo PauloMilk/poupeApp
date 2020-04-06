@@ -1,9 +1,9 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Lancamento } from 'src/app/pages/lancamento/shared/lancamento';
-import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LancamentoService } from 'src/app/pages/lancamento/shared/lancamento.service';
 import { BaseResourceListComponent } from 'src/app/shared/components/base-resource-list/base-resource-list.component';
-import { ToastService } from 'src/app/shared/services/toast.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lancamento-list',
@@ -11,7 +11,7 @@ import { ToastService } from 'src/app/shared/services/toast.service';
   styleUrls: ['./lancamento-list.component.css']
 })
 export class LancamentoListComponent extends BaseResourceListComponent<Lancamento> {
-  constructor(private service: LancamentoService, private injector: Injector, protected toastService: ToastService) {
+  constructor(private service: LancamentoService, private injector: Injector, protected toastService: ToastrService) {
     super(service, injector.get(NgbModal), toastService);
   }
 

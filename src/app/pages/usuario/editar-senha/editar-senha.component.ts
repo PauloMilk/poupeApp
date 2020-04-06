@@ -1,11 +1,11 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { Usuario } from '../shared/usuario';
-import { ToastService } from 'src/app/shared/services/toast.service';
 import { UsuarioService } from '../shared/usuario.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Validators } from '@angular/forms';
-import { tap, finalize } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-editar-senha',
@@ -14,16 +14,18 @@ import { tap, finalize } from 'rxjs/operators';
 })
 export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
 
-  public errorMessage: string[] = null;
+  public errorMessage: string[] = [];
+  public errorSenhas = false;
 
-  constructor(protected injector: Injector, protected service: UsuarioService, protected toastService: ToastService, private modalService: NgbModal) {
+  private modal: NgbModalRef;
+  constructor(protected injector: Injector, protected service: UsuarioService, protected toastService: ToastrService, private modalService: NgbModal) {
     super(injector, new Usuario(), service, Usuario.fromJson, toastService);
   }
   protected buildResourceForm() {
     this.resourceForm = this.formBuilder.group({
-      senha: [null, [Validators.required]],
-      novaSenha: [null, [Validators.minLength(3)]],
-      confirmeSenha: [null, [Validators.minLength(3)]]
+      senha: [null, [Validators.required, Validators.minLength(6)]],
+      novaSenha: [null, [Validators.required, Validators.minLength(6)]],
+      confirmeSenha: [null, [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -32,12 +34,8 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
     this.buildResourceForm();
   }
 
- open(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  open(content) {
+    this.modal = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   close(error: string) {
@@ -46,9 +44,28 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
 
 
   submitForm() {
-    this.submittingForm = true;
     const resource: Usuario = this.jsonDataToResourceFn(this.resourceForm.value);
-    this.updateUsuario(resource);
+    if (resource.novaSenha === resource.confirmeSenha) {
+      this.submittingForm = true;
+      this.updateUsuario(resource);
+    } else {
+      this.modal.close();
+      this.errorSenhas = true;
+      this.errorMessage.push('Senha incoerentes!');
+    }
+
+  }
+
+  public validarSenhas(content: NgbModalRef) {
+    this.errorMessage = [];
+    this.errorSenhas = false;
+    const resource: Usuario = this.jsonDataToResourceFn(this.resourceForm.value);
+    if (resource.novaSenha === resource.confirmeSenha) {
+      this.open(content);
+    } else {
+      this.errorSenhas = true;
+      this.errorMessage.push('Senha incoerentes!');
+    }
   }
 
   private updateUsuario(resource: Usuario) {
@@ -61,10 +78,20 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
     )
       .subscribe(
         data => {
-          this.toastService.show('Operação realizada com sucesso!', { classname: 'bg-success text-light', delay: 3000 });
+          this.toastService.success('Operação realizada com sucesso!', null, {
+            progressBar: true, closeButton: true, positionClass: 'toast-bottom-right'
+          });
         },
         error => {
-          this.toastService.show('Ocorreu um erro no servidor, tente mais tarde.', { classname: 'bg-danger text-light', delay: 10000 });
+          error.error.forEach(element => {
+            this.errorMessage.push(element.mensagemUsuario);
+          });
+          const erroMessage = error.error[0].mensagemUsuario != null
+            ? error.error[0].mensagemUsuario
+            : 'Ocorreu um erro ao processar a sua solicitação!';
+          this.toastService.error(erroMessage, null, {
+            progressBar: true, closeButton: true, positionClass: 'toast-bottom-right'
+          });
         }
       );
   }
