@@ -81,10 +81,10 @@
             <label for="paid">Status</label>
             <br />
             <div class="btn-group">
-              <label (click)="resourceForm.get('pagamento').setValue('PAGO')"
-                [class.active]="resourceForm.get('pagamento').value == 'PAGO'" class="btn btn-outline-info">Pago</label>
-              <label (click)="resourceForm.get('pagamento').setValue('PENDENTE')"
-                [class.active]="resourceForm.get('pagamento').value == 'PENDENTE'"
+              <label (click)="resourceForm.get('statusPagamento').setValue('PAGO')"
+                [class.active]="resourceForm.get('statusPagamento').value == 'PAGO'" class="btn btn-outline-info">Pago</label>
+              <label (click)="resourceForm.get('statusPagamento').setValue('PENDENTE')"
+                [class.active]="resourceForm.get('statusPagamento').value == 'PENDENTE'"
                 class="btn btn-outline-info">Pendente</label>
             </div>
           </div>
@@ -92,16 +92,24 @@
           <div class="form-group col-md-2">
 
             <label for="categoryId">Categoria</label>
-            <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed"
-              formControlName="categoria" [ngbTypeahead]="search" placeholder="Pesquise a categoria" [ngbTypeahead]="search"
-              [inputFormatter]="formatter" [editable]='false' [class.is-invalid]="resourceForm.get('categoria').invalid && resourceForm.get('categoria').touched" />
-              <div class="text-danger" *ngIf="resourceForm.get('categoria').invalid && resourceForm.get('categoria').touched">
+            <input id="categoryId" type="text" class="form-control" 
+              [class.is-invalid]="searchFailed"
+              formControlName="categoria" 
+              [ngbTypeahead]="search" 
+              placeholder="Pesquise a categoria" 
+              [inputFormatter]="formatter" 
+              [resultFormatter]="formatter"
+              [editable]='false' 
+              [class.is-invalid]="resourceForm.get('categoria').invalid && resourceForm.get('categoria').touched" 
+            />
+            
+            <div class="text-danger" *ngIf="resourceForm.get('categoria').invalid && resourceForm.get('categoria').touched">
                 <div *ngIf="resourceForm.get('categoria').errors.required">
                   O campo categoria é obrigatório.
                 </div>
               </div>
           </div>
-
+          
           <div class="form-group col-md-8">
             <label for="description">Descrição</label>
             <input type="text" id="description" maxlength="150" class="form-control" name="descricao" formControlName="descricao" [class.is-invalid]="resourceForm.get('descricao').invalid && resourceForm.get('descricao').touched">

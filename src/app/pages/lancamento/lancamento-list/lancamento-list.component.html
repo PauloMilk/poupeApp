@@ -25,8 +25,8 @@
             [class.table-success]="lancamento.tipo != 'DESPESA'" placement="bottom" [ngbTooltip]="lancamento.descricao">
             <td class="col-2" scope="row">{{lancamento.nome}}</td>
             <td class="col-1">{{lancamento.tipo}}</td>
-            <td class="col-1">{{lancamento.pagamento}}</td>
-            <td class="col-2">{{lancamento.categoria}}</td>
+            <td class="col-1">{{lancamento.statusPagamento}}</td>
+            <td class="col-2">{{lancamento.categoria.nome}}</td>
             <td class="col-2">{{lancamento.valor | currency: 'BRL'}}</td>
             <td class="col-2">{{lancamento.data | date: 'dd/MM/yyyy' }}</td>
             <td class="col-sm-2">

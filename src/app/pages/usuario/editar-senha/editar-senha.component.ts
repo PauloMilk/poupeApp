@@ -81,11 +81,11 @@ export class EditarSenhaComponent extends BaseResourceFormComponent<Usuario> {
           });
         },
         error => {
-          error.error.forEach(element => {
-            this.errorMessage.push(element.mensagemUsuario);
+          error.error.errors.forEach(element => {
+            this.errorMessage.push(element);
           });
-          const erroMessage = error.error[0].mensagemUsuario != null
-            ? error.error[0].mensagemUsuario
+          const erroMessage = error.error.errors[0] != null
+            ? error.error.errors[0]
             : 'Ocorreu um erro ao processar a sua solicitação!';
           this.toastService.error(erroMessage, null, {
             progressBar: true, closeButton: true, positionClass: 'toast-bottom-right'

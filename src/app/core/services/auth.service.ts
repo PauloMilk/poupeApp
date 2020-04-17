@@ -22,15 +22,15 @@ export class AuthService {
   logar(usuario: Usuario): Observable<boolean> {
     const { url, httpOptions } = this.createHeaders();
 
-    const params = new URLSearchParams();
-    params.append('username', usuario.email);
-    params.append('password', usuario.senha);
-    params.append('grant_type', 'password');
+    // const params = new URLSearchParams();
+    // params.append('username', usuario.email);
+    // params.append('password', usuario.senha);
+    // params.append('grant_type', 'password');
 
-    return this.http.post(url, params.toString(), { headers: httpOptions }).pipe(
+    return this.http.post(url, {email: usuario.email, senha: usuario.senha}, { headers: httpOptions }).pipe(
       map((resp: any) => {
         this.jwtPayload = null;
-        this.armazenarToken(resp.access_token);
+        this.armazenarToken(resp.token);
         return true;
       })
     );
@@ -62,18 +62,20 @@ export class AuthService {
   }
 
   deslogar() {
-    const url = `${environment.urlAPI}/tokens/revoke`;
-    this.http.delete(url).subscribe(
-      () => {
-        this.jwtPayload = null;
-        localStorage.removeItem('token');
-      },
-      (error) => {
-        this.jwtPayload = null;
-        localStorage.removeItem('token');
-        console.log(error);
-      }
-    );
+    this.jwtPayload = null;
+    localStorage.removeItem('token');
+    // const url = `${environment.urlAPI}/tokens/revoke`;
+    // this.http.delete(url).subscribe(
+    //   () => {
+    //     this.jwtPayload = null;
+    //     localStorage.removeItem('token');
+    //   },
+    //   (error) => {
+    //     this.jwtPayload = null;
+    //     localStorage.removeItem('token');
+    //     console.log(error);
+    //   }
+    // );
   }
 
   refreshToken(): Observable<string> {
@@ -95,10 +97,9 @@ export class AuthService {
 
 
   private createHeaders() {
-    const url = `${environment.urlAPI}/oauth/token`;
+    const url = `${environment.urlAPI}/auth`;
     const httpOptions = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: 'Basic d2ViOndlYg==',
+      'Content-Type': 'application/json'
     });
     return { url, httpOptions };
   }

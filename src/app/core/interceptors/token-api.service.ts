@@ -5,6 +5,7 @@ import { Injectable, Injector } from '@angular/core';
 // tslint:disable-next-line: max-line-length
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderResponse, HttpProgressEvent, HttpResponse, HttpUserEvent, HttpErrorResponse } from "@angular/common/http";
 import { AuthService } from '../services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class TokenApiService implements HttpInterceptor {
   isRefreshingToken = false;
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(private injector: Injector) { }
+  constructor(private injector: Injector, private router: Router) { }
 
   addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
     return req.clone({ setHeaders: { Authorization: 'Bearer ' + token } });
@@ -23,7 +24,7 @@ export class TokenApiService implements HttpInterceptor {
   // tslint:disable-next-line: max-line-length
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
     const authService = this.injector.get(AuthService);
-    if (req.url.includes('/api/oauth/token') || !authService.token) {
+    if (!authService.token) {
       return next.handle(req);
     }
     return next.handle(this.addToken(req, authService.token)).pipe(
@@ -92,8 +93,7 @@ export class TokenApiService implements HttpInterceptor {
 
 
   logoutUser() {
-    // Route to the login page (implementation up to you)
-
+    this.router.navigate(['/login']);
     return observableThrowError('');
   }
 }

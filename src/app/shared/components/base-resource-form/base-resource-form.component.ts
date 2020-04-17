@@ -135,8 +135,8 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected actionsForError(error) {
-    const erroMessage = error.error[0].mensagemUsuario != null
-      ? error.error[0].mensagemUsuario
+    const erroMessage = error.error.errors[0] != null
+      ? error.error.errors[0]
       : 'Ocorreu um erro ao processar a sua solicitação!';
     this.toastService.error(erroMessage, null, {
       progressBar: true, closeButton: true, positionClass: 'toast-bottom-right'

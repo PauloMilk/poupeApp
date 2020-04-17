@@ -8,6 +8,7 @@ import { BaseResourceFormComponent } from 'src/app/shared/components/base-resour
 import { Observable, of } from 'rxjs';
 import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Categoria } from '../../categoria/shared/categoria';
 
 @Component({
   selector: 'app-lancamento-form',
@@ -28,7 +29,6 @@ export class LancamentoFormComponent extends BaseResourceFormComponent<Lancament
 
 
   protected editorResourceAttributes() {
-    console.log(this.resource.data);
     if (this.resource.data !== undefined) {
       this.resource.data = new Date(this.resource.data);
       this.resource.data
@@ -43,7 +43,7 @@ export class LancamentoFormComponent extends BaseResourceFormComponent<Lancament
       tap(() => this.searching = true),
       switchMap(term =>
         this.categoriaService.getAll(0, 20, term).pipe(
-          map(response => Array.from(response.content).map(value => value.nome)),
+          map(response => Array.from(response.content).map(value => value)),
           tap(() => this.searchFailed = false),
           catchError(() => {
             this.searchFailed = true;
@@ -60,13 +60,13 @@ export class LancamentoFormComponent extends BaseResourceFormComponent<Lancament
       nome: [null, [Validators.required, Validators.minLength(3)]],
       valor: [0.00, [Validators.required, Validators.min(0.01)]],
       data: [new Date(Date.now()), [Validators.required]],
-      pagamento: ['PAGO', [Validators.required]],
+      statusPagamento: ['PAGO', [Validators.required]],
       categoria: [null, [Validators.required]],
       descricao: [null, [Validators.maxLength(150)]]
     });
   }
 
-  formatter = (x: string) => x.toUpperCase();
+  formatter = (x: Categoria) => x.nome;
 
   protected creationPageTitle() {
     return 'Cadastro de Novo Lançamento';

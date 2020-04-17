@@ -7,6 +7,12 @@ import { UsuarioService } from '../../usuario/shared/usuario.service';
 import { finalize } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+export interface errorApi {
+  error: {
+    errors: string[]
+  }
+};
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -45,14 +51,12 @@ export class LoginComponent implements OnInit {
     this.authService.logar(this.usuario).subscribe(
       () => {
         this.loading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/']);
       },
-      (erro: any) => {
+      (data: errorApi) => {
         this.loading = false;
-        let error = erro.error.error_description === 'Usuário inexistente ou senha inválida'
-          ? 'Usuário e/ou senha inválidos!' : erro.error.error_description;
-
-        if (error === 'Usuário não está ativo!') {
+        let error = data.error.errors[0];
+        if (error === 'Usuário está desativado!') {
           this.btnSolicitarAtivacao = true;
         }
         if (error == null) {
