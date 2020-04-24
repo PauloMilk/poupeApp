@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
   { path: 'confirmacao/:codigo', component: ConfirmacaoCadastroComponent, canActivate: [NoAuthGuard] },
   { path: 'esqueceuSenha', component: EsqueceuSenhaComponent,  canActivate: [NoAuthGuard] },
-  { path: 'recupercaoDeSenha/:codigo/:email', component: RecuperarSenhaComponent, canActivate: [NoAuthGuard] },
+  { path: 'recuperacaoDeSenha/:codigo/:email', component: RecuperarSenhaComponent, canActivate: [NoAuthGuard] },
   { path: 'cadastrarSe', component: CadastroUsuarioComponent,  canActivate: [NoAuthGuard] },
 
 ];
