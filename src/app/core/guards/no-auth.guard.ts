@@ -10,11 +10,10 @@ import { Location } from '@angular/common';
 export class NoAuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router,  private location: Location) { }
   canActivate(): boolean {
-    // return this.authService.autenticado$.pipe(
-    //   map(autenticado => {
-    //     return !autenticado;
-    //   })
-    // );
+    if (this.authService.temPermissao()) {
+      this.router.navigate(['/lancamento']);
+      return false;
+    }
     return true;
   }
 

@@ -94,10 +94,10 @@
             <label for="categoryId">Categoria</label>
             <input id="categoryId" type="text" class="form-control" 
               [class.is-invalid]="searchFailed"
-              formControlName="categoria" 
-              [ngbTypeahead]="search" 
+              formControlName="categoria"
               placeholder="Pesquise a categoria" 
-              [inputFormatter]="formatter" 
+              [ngbTypeahead]="search" 
+              [inputFormatter]="formatter"
               [resultFormatter]="formatter"
               [editable]='false' 
               [class.is-invalid]="resourceForm.get('categoria').invalid && resourceForm.get('categoria').touched" 

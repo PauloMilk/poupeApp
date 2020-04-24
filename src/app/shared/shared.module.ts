@@ -7,9 +7,8 @@ import { PageTitleComponent } from './components/page-title/page-title.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
-import { ToastGlobalComponent } from './components/toast-global/toast-global.component';
 @NgModule({
-  declarations: [NavbarComponent, PageTitleComponent, ModalConfirmComponent, ToastGlobalComponent],
+  declarations: [NavbarComponent, PageTitleComponent, ModalConfirmComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -42,12 +41,10 @@ import { ToastGlobalComponent } from './components/toast-global/toast-global.com
     NgbTooltipModule,
     NgbTypeaheadModule,
     NgbToastModule,
-    ToastGlobalComponent,
     NgbCollapseModule
   ],
   entryComponents: [
-    ModalConfirmComponent,
-    ToastGlobalComponent
+    ModalConfirmComponent
   ]
 })
 export class SharedModule { }

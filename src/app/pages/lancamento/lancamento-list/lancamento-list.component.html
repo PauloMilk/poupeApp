@@ -4,7 +4,7 @@
   </app-page-title>
   <form>
     <div class="form-group form-inline">
-      Busque pelo nome, descrição ou categoria: <input class="form-control ml-2" type="text" name="searchTerm"
+      Busque pelo nome: <input class="form-control ml-2" type="text" name="searchTerm"
         [(ngModel)]="search" (ngModelChange)='changed($event)' />
     </div>
     <ng-container *ngIf="(!loading && resources.length > 0) else noData">
@@ -65,4 +65,3 @@
   </form>
 </div>
 
-<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

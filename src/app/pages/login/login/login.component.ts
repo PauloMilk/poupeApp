@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/pages/usuario/shared/usuario';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../usuario/shared/usuario.service';
 import { finalize } from 'rxjs/operators';
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit {
     this.authService.logar(this.usuario).subscribe(
       () => {
         this.loading = false;
-        this.router.navigate(['/']);
+        this.router.navigate(['/lancamento']);
       },
       (data: errorApi) => {
         this.loading = false;

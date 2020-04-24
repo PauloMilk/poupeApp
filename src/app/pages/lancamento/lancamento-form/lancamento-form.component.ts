@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { Lancamento } from 'src/app/pages/lancamento/shared/lancamento';
 import { LancamentoService } from 'src/app/pages/lancamento/shared/lancamento.service';
 import { Validators } from '@angular/forms';
-import { switchMap, debounceTime, distinctUntilChanged, map, tap, catchError } from 'rxjs/operators';
+import { switchMap, debounceTime, distinctUntilChanged, map, tap, catchError, repeat } from 'rxjs/operators';
 import { CategoriaService } from 'src/app/pages/categoria/shared/categoria.service';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { Observable, of } from 'rxjs';
@@ -43,8 +43,10 @@ export class LancamentoFormComponent extends BaseResourceFormComponent<Lancament
       tap(() => this.searching = true),
       switchMap(term =>
         this.categoriaService.getAll(0, 20, term).pipe(
-          map(response => Array.from(response.content).map(value => value)),
-          tap(() => this.searchFailed = false),
+          map((response: any) => 
+            Array.from(response.content).map(value => Categoria.fromJson(value))
+            ),
+            tap(console.log),
           catchError(() => {
             this.searchFailed = true;
             return of([]);

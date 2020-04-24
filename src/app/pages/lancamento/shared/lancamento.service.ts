@@ -20,9 +20,9 @@ export class LancamentoService extends BaseResourceService<Lancamento> {
     page--;
     let url;
     if (filter !== null) {
-      url = `${environment.urlAPI}/lancamentos?page=${page}&size=${size}&nome=${filter}&descricao=${filter}&categoria=${filter}&sort=data,DESC`;
+      url = `${environment.urlAPI}/lancamentos?page=${page}&size=${size}&nome=${filter}&sort=DESC`;
     } else {
-      url = `${environment.urlAPI}/lancamentos?page=${page}&size=${size}&sort=data,DESC`;
+      url = `${environment.urlAPI}/lancamentos?page=${page}&size=${size}&sort=DESC`;
     }
     return this.http.get(url).pipe(
       map(Page.fromJson.bind(this)),

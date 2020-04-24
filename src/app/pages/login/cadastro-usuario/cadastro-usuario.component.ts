@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/pages/usuario/shared/usuario';
-import { UsuarioService } from '../shared/usuario.service';
-import { finalize, tap } from 'rxjs/operators';
+import { UsuarioService } from '../../usuario/shared/usuario.service';
+import { finalize } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({

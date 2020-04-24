@@ -5,13 +5,14 @@ import { AuthGuard } from './core/guards/auth.guard';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/lancamento', pathMatch: 'full' },
-  { path: 'login', loadChildren: './pages/login/login.module#LoginModule', canActivate: [NoAuthGuard] },
+  { path: '', redirectTo: '/login', pathMatch: 'full', canActivate: [NoAuthGuard] },
+  { path: '', loadChildren: './pages/login/login.module#LoginModule', canActivate: [NoAuthGuard] },
   // { path: 'dashboard', loadChildren: './pages/dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard]},
   { path: 'categoria', loadChildren: './pages/categoria/categoria.module#CategoriaModule', canActivate: [AuthGuard]},
   { path: 'lancamento', loadChildren: './pages/lancamento/lancamento.module#LancamentoModule', canActivate: [AuthGuard]},
   { path: 'relatorio', loadChildren: './pages/relatorio/relatorio.module#RelatorioModule', canActivate: [AuthGuard]},
-  { path: 'usuario', loadChildren: './pages/usuario/usuario.module#UsuarioModule'}
+  { path: 'usuario', loadChildren: './pages/usuario/usuario.module#UsuarioModule'},
+  { path: '**', redirectTo: '/login', pathMatch:'full' }
 ];
 
 @NgModule({

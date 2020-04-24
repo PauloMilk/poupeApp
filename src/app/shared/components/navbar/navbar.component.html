@@ -27,7 +27,7 @@
               <button class="btn btn-link text-white" id="dropdownBasic1" ngbDropdownToggle>{{ authService.jwtPayload?.nome }}</button>
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                 <button ngbDropdownItem routerLink="/usuario/meusDados" routerLinkActive="active">Minha Conta</button>
-                <button ngbDropdownItem>Ajuda</button>
+                <button ngbDropdownItem *ngIf="false">Ajuda</button>
                 <button ngbDropdownItem (click)="logout()">Sair</button>
               </div>
             </div>

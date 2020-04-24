@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from '../shared/usuario';
-import { UsuarioService } from '../shared/usuario.service';
+import { Usuario } from '../../usuario/shared/usuario';
+import { UsuarioService } from '../../usuario/shared/usuario.service';
 import { finalize } from 'rxjs/operators';
-import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-esqueceu-senha',

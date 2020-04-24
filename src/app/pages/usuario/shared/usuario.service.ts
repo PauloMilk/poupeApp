@@ -25,23 +25,11 @@ export class UsuarioService extends BaseResourceService<Usuario> {
     return this.http.get(url);
   }
 
-  atualizarDados(usuario): Observable<Usuario> {
-    const url = `${environment.urlAPI}/usuarios`;
-    return this.http.patch(url, { nome: usuario.nome }).pipe(
-      finalize(() => {
-        const authService = this.injector.get(AuthService);
-        authService.refreshToken();
-        authService.jwtPayload.nome = usuario.nome;
-      })
-    );
-  }
-
   atualizarNome(usuario): Observable<Usuario> {
     const url = `${environment.urlAPI}/usuarios/nome`;
     return this.http.patch(url, { nome: usuario.nome }).pipe(
       finalize(() => {
         const authService = this.injector.get(AuthService);
-        authService.refreshToken();
         authService.jwtPayload.nome = usuario.nome;
       })
     );

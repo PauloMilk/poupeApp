@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioService } from '../shared/usuario.service';
+import { UsuarioService } from '../../usuario/shared/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap, finalize } from 'rxjs/operators';
-import { Usuario } from '../shared/usuario';
+import { finalize } from 'rxjs/operators';
+import { Usuario } from '../../usuario/shared/usuario';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({

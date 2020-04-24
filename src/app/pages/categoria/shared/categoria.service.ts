@@ -20,7 +20,8 @@ export class CategoriaService extends BaseResourceService<Categoria> {
     page--;
     let url;
     if (filter !== null) {
-      url = `${environment.urlAPI}/categorias?page=${page}&size=${size}&nome=${filter}&descricao=${filter}`;
+      url = `${environment.urlAPI}/categorias?page=${page}&size=${size}&nome=${filter}`;
+      console.log(url)
     } else {
       url = `${environment.urlAPI}/categorias?page=${page}&size=${size}`;
     }
